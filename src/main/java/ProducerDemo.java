@@ -6,20 +6,23 @@ import java.util.Random;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 详细可以参考：https://cwiki.apache.org/confluence/display/KAFKA/0.8.0+Producer+Example
- * @author Fung
  *
+ * @author Fung
  */
 public class ProducerDemo {
+    private static Logger logger = LogManager.getLogger(ProducerDemo.class);
     public static void main(String[] args) {
         Random rnd = new Random();
-        int events=100;
+        int events = 100;
 
         // 设置配置属性
         Properties props = new Properties();
-        props.put("metadata.broker.list","node3:9092");
+        props.put("metadata.broker.list", "node3:9092");
         props.put("serializer.class", "kafka.serializer.StringEncoder");
         // key.serializer.class默认为serializer.class
         props.put("key.serializer.class", "kafka.serializer.StringEncoder");
@@ -34,17 +37,19 @@ public class ProducerDemo {
         // 创建producer
         Producer<String, String> producer = new Producer<String, String>(config);
         // 产生并发送消息
-        long start=System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         for (long i = 0; i < events; i++) {
             long runtime = new Date().getTime();
             String ip = "192.168.2." + i;//rnd.nextInt(255);
-            String msg = runtime + ",www.example.com," + ip;
+            String msg = runtime + "\t" + args[0];
             //如果topic不存在，则会自动创建，默认replication-factor为1，partitions为0
             KeyedMessage<String, String> data = new KeyedMessage<String, String>(
                     "test", ip, msg);
             producer.send(data);
+            logger.info(ip + msg);
         }
-        System.out.println("耗时:" + (System.currentTimeMillis() - start));
+        logger.info("耗时:" + (System.currentTimeMillis() - start));
+
         // 关闭producer
         producer.close();
     }
