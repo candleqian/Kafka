@@ -1,3 +1,5 @@
+package candle.test.kafka;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class ConsumerDemo {
 
     public static void main(String[] arg) {
 
-        String[] args = {"node3:2181", "group-1", "test", "2"};
+        String[] args = {"node2:2181,node3:2181,node4:2181", "group1", "test2", "2"};
         String zooKeeper = args[0];
         String groupId = args[1];//消费者相关,各自消费各自的
         String topic = args[2];
