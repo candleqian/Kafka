@@ -1,3 +1,5 @@
+package candle.test.kafka;
+
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import org.apache.logging.log4j.LogManager;
@@ -14,8 +16,6 @@ public class ConsumerMsgTask implements Runnable {
     }
 
     public void run() {
-
-
         ConsumerIterator<byte[], byte[]> it = m_stream.iterator();
         while (it.hasNext())
             logger.info("Thread " + m_threadNumber + ": "

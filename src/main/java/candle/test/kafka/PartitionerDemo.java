@@ -1,3 +1,5 @@
+package candle.test.kafka;
+
 import kafka.producer.Partitioner;
 import kafka.utils.VerifiableProperties;
 
